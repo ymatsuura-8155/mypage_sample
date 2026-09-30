@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KronID Auth Mock</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Web App Side Wrapper (PC Mockup) -->
+        <div class="web-app-side-wrapper">
+            <div class="browser-window">
+                <div class="browser-header">
+                    <div class="browser-dots">
+                        <span class="dot-red"></span>
+                        <span class="dot-yellow"></span>
+                        <span class="dot-green"></span>
+                    </div>
+                    <div class="browser-url-bar">
+                        <i class="ph-bold ph-lock-key"></i>
+                        <span>portal.city.miyazaki.lg.jp</span>
+                    </div>
+                </div>
+                <div class="web-app-side">
+                    <!-- Web App Header -->
+            <header class="web-header">
+                <div class="logo">
+                    <i class="ph-fill ph-buildings"></i>
+                    <span>宮崎市 ポータル</span>
+                </div>
+            </header>
+
+            <!-- State 1: Unauthenticated -->
+            <div id="web-unauthenticated" class="web-content view-state active">
+                <div class="hero-section">
+                    <h1>市民サービスへようこそ</h1>
+                    <p>行政手続きをオンラインでスムーズに。KronIDを利用して安全にログインしてください。</p>
+                    <button id="btn-web-login" class="btn-primary">
+                        <i class="ph ph-fingerprint"></i>
+                        KronIDでログイン
+                    </button>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="ph-duotone ph-file-text"></i>
+                        <h3>オンライン申請</h3>
+                        <p>各種証明書や手当の申請をオンラインで。</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="ph-duotone ph-bell-ringing"></i>
+                        <h3>個別のお知らせ</h3>
+                        <p>あなたに合わせた市政情報をお届けします。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- State 2: Authenticating -->
+            <div id="web-authenticating" class="web-content view-state">
+                <div class="loading-container">
+                    <div class="spinner"></div>
+                    <h2>スマートフォンをご確認ください</h2>
+                    <p>Kronアプリで認証を許可してください...</p>
+                </div>
+            </div>
+
+            <!-- State 3: Authenticated (Dashboard) -->
+            <div id="web-authenticated" class="web-content view-state dashboard">
+                <div class="dashboard-header">
+                    <h2>マイページ</h2>
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=市民+太郎&background=0D8ABC&color=fff&rounded=true" alt="User">
+                        <span>市民 太郎 様</span>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="glass-card span-2">
+                        <div class="card-header">
+                            <i class="ph-duotone ph-check-circle"></i>
+                            <h3>手続きの進捗</h3>
+                        </div>
+                        <div class="progress-list">
+                            <div class="progress-item">
+                                <div class="item-info">
+                                    <h4>児童手当 認定請求</h4>
+                                    <span class="date">2026年5月10日 申請</span>
+                                </div>
+                                <div class="status badge-review">審査中</div>
+                            </div>
+                            <div class="progress-item">
+                                <div class="item-info">
+                                    <h4>住民票の写し 交付請求</h4>
+                                    <span class="date">2026年5月15日 申請</span>
+                                </div>
+                                <div class="status badge-complete">発行完了</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <i class="ph-duotone ph-envelope-simple-open"></i>
+                            <h3>個別のご案内</h3>
+                        </div>
+                        <div class="notification-list" id="notification-list">
+                            <!-- AI Proposal -->
+                            <div class="notification-item unread" id="ai-proposal-item">
+                                <i class="ph-fill ph-magic-wand text-purple"></i>
+                                <div class="proposal-content">
+                                    <h4>【提案】保育料無償化の申請</h4>
+                                    <p>要件を満たしている可能性があります。AIが代理で申請手続きを行いますか？</p>
+                                    <button id="btn-ai-apply" class="btn-primary btn-small mt-2">
+                                        <i class="ph-bold ph-robot"></i> 申請する
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="notification-item">
+                                <i class="ph-fill ph-warning-circle text-orange"></i>
+                                <div>
+                                    <h4>特定健診のお知らせ</h4>
+                                    <p>今年の健康診断の受診票を発送しました。</p>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <i class="ph-fill ph-info text-blue"></i>
+                                <div>
+                                    <h4>防災訓練のご案内</h4>
+                                    <p>今週末、お住まいの地域で避難訓練が実施されます。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Agent Processing Overlay -->
+                <div id="ai-processing-overlay" class="ai-overlay hidden">
+                    <div class="ai-processing-card">
+                        <div class="ai-avatar">
+                            <i class="ph-fill ph-robot"></i>
+                        </div>
+                        <h3>AIエージェントが処理中...</h3>
+                        <p id="ai-status-text">保育料無償化の申請に必要な情報を収集しています</p>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        </div>
+
+        <!-- Smartphone Side -->
+        <div class="smartphone-side">
+            <div class="smartphone-device">
+                <div class="smartphone-screen">
+                    <div class="status-bar">
+                        <span class="time">14:55</span>
+                        <div class="icons">
+                            <i class="ph-fill ph-cell-signal-full"></i>
+                            <i class="ph-fill ph-wifi-high"></i>
+                            <i class="ph-fill ph-battery-full"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="app-header">
+                        <h2>Kron</h2>
+                    </div>
+
+                    <!-- App State 1: Home -->
+                    <div id="sp-home" class="sp-content view-state active">
+                        <div class="id-card">
+                            <div class="id-logo"><i class="ph-fill ph-fingerprint"></i> KronID</div>
+                            <div class="id-name">Taro Shimin</div>
+                            <div class="id-number">ID: **** **** 1234</div>
+                        </div>
+                        <div class="recent-activity">
+                            <h3>最近の利用</h3>
+                            <p class="empty-state">最近の利用履歴はありません</p>
+                        </div>
+                    </div>
+
+                    <!-- App State 2: Permission Request -->
+                    <div id="sp-permission" class="sp-content view-state">
+                        <div class="auth-request">
+                            <div class="request-icon">
+                                <i class="ph-duotone ph-buildings"></i>
+                            </div>
+                            <h3>宮崎市 ポータル</h3>
+                            <p>以下の情報へのアクセスを求めています。</p>
+                            
+                            <ul class="permission-list">
+                                <li><i class="ph ph-check"></i> 氏名、生年月日</li>
+                                <li><i class="ph ph-check"></i> 住所情報</li>
+                                <li><i class="ph ph-check"></i> 連絡先（メールアドレス）</li>
+                            </ul>
+
+                            <div class="action-buttons">
+                                <button id="btn-sp-deny" class="btn-secondary">キャンセル</button>
+                                <button id="btn-sp-allow" class="btn-primary">
+                                    <i class="ph-fill ph-fingerprint"></i>
+                                    認証を許可
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- App State 3: Success -->
+                    <div id="sp-success" class="sp-content view-state">
+                        <div class="success-message">
+                            <div class="success-icon">
+                                <i class="ph-fill ph-check-circle"></i>
+                            </div>
+                            <h3>認証完了</h3>
+                            <p>宮崎市ポータルへのログインが完了しました。</p>
+                            <button id="btn-sp-close" class="btn-secondary mt-4">閉じる</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
